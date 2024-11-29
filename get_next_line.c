@@ -6,11 +6,12 @@
 /*   By: guisanto <guisanto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:25:13 by guisanto          #+#    #+#             */
-/*   Updated: 2024/11/28 18:53:18 by guisanto         ###   ########.fr       */
+/*   Updated: 2024/11/29 12:57:59 by guisanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
 static char *ft_substr(char const *s, unsigned int start, size_t len)
 {
 	size_t	i;
@@ -51,87 +52,76 @@ static char *ft_strchr(const char *str, int c)
 		return ((char *)&str[i]);
 	return (NULL);
 }
-static char function_name(int fd, char *buf, char *backup)
+char *get_next_line(int fd)
 {
-    int     read_line;
-    char    *char_temp;
-    
-    read_line = 1;
-    while(read_line)
-    {
-        read_line = read(fd, buf, BUFFER_SIZE);
-        if (read_line == -1)
-            return (0);    
-        else if (read_line == 0)
-            break;
-        buf[read_line] == '\0';
-        if(!backup)
-            backup = ft_strdup("");
-        char_temp = backup;
-        backup = ft_strjoin(char_temp, buf);
-        free(char_temp);
-        char_temp == NULL;
-        if (ft_strchr(buf, '\n'));
-            break;
-    }
-    return (backup);
+	char		*temp;
+	char		*buf;
+	char		*line;
+	static char	*backup;
+	int			bytes_read;
+	char		*new_line;
+	int			len;
+
+	buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!buf || fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	len = 0;
+	bytes_read = 1;
+	backup = NULL;
+	while (bytes_read > 0)
+	{
+		bytes_read = read(fd, buf, BUFFER_SIZE);
+		if (bytes_read < 0)
+			return (free(buf), NULL);
+		buf[bytes_read] = '\0';
+		if (backup)
+		{
+			temp = ft_strjoin(backup, buf);
+			free(backup);
+			backup = temp;
+		}
+		else
+			backup = ft_strdup("");
+		new_line = ft_strchr(backup, '\n');
+		if (new_line)
+		{
+			len = new_line - backup + 1;
+			line = ft_substr(backup, 0, len);
+			temp = ft_strdup(new_line + 1);
+			free(backup);
+			backup = temp;
+			break;
+		}
+		if (bytes_read == 0)
+		{
+			if (backup)
+			{
+				line = ft_strdup(backup);
+				free(backup);
+				backup = NULL;
+			}
+			break;
+		}
+	}
+	free(buf);
+	return (line);
 }
-static char extract(char *line)
+int main()
 {
-    size_t  i;
-    char    *backup;
+	int fd;
+	char *line;
 
-    i = 0;
-    while(line[i] != '\n' || line[i])
-        i++;
-    if (line[i] == '\0' || line[1] == '\0')
-        return (0);
-    backup = ft_substr(line, i + 1, ft_strlen(line) - i);
-    if (*backup == '\0')
-    {
-        free(backup);
-        backup = NULL;
-    }   
-    line[i + 1] = '\0';
-    return (backup)
+	fd = open("text.txt", O_RDONLY);
+	if (fd == -1)
+	{
+		perror("error ao abrir o arquivo");
+		return (1);
+	}
+	while((line = get_next_line(fd)) != NULL)
+	{
+		printf("%s", line);
+		free(line);
+	}
+	close(fd);
+	return (0);
 }
-
-char    get_next_line(int fd)
-{
-    char    *line;
-    char    *buf;
-    static char    *backup;
-    
-    if (fd < 0 || BUFFER_SIZE <= 0)
-        return (NULL);
-    buf = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
-    if (!buf)
-        return (0);
-    line = function_name(fd, buf, backup);
-    free(buf);
-    buf == NULL;
-    if (!line)
-        return (NULL);
-    backup = extract(line);
-    return (line);   
-}
-
-
-
-
-
-
-/* int main()
-{
-    int     fd;
-    char    buf[256];
-    int     chars_read;
-    int     i;
-    
-    fd = open("text.txt", O_RDONLY );
-    while((chars_read = read(fd, buf, 1)))
-    {
-        buf[chars_read] = '\0';
-        printf("%s", buf);
-    }
-} */
