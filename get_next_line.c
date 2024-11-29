@@ -6,13 +6,13 @@
 /*   By: guisanto <guisanto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:25:13 by guisanto          #+#    #+#             */
-/*   Updated: 2024/11/29 12:57:59 by guisanto         ###   ########.fr       */
+/*   Updated: 2024/11/29 16:01:56 by guisanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char *ft_substr(char const *s, unsigned int start, size_t len)
+static char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	size_t	i;
 	char	*dest;
@@ -35,7 +35,8 @@ static char *ft_substr(char const *s, unsigned int start, size_t len)
 	dest[i] = '\0';
 	return (dest);
 }
-static char *ft_strchr(const char *str, int c)
+
+static char	*ft_strchr(const char *str, int c)
 {
 	int		i;
 	char	cc;
@@ -52,7 +53,8 @@ static char *ft_strchr(const char *str, int c)
 		return ((char *)&str[i]);
 	return (NULL);
 }
-char *get_next_line(int fd)
+
+char	*get_next_line(int fd)
 {
 	char		*temp;
 	char		*buf;
@@ -106,6 +108,7 @@ char *get_next_line(int fd)
 	free(buf);
 	return (line);
 }
+
 int main()
 {
 	int fd;
