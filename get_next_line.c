@@ -6,7 +6,7 @@
 /*   By: guisanto <guisanto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:25:13 by guisanto          #+#    #+#             */
-/*   Updated: 2024/12/02 16:14:18 by guisanto         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:55:06 by guisanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,43 +55,12 @@ static char	*ft_strchr(const char *str, int c)
 }
 static check_buffer(char *buffer)
 {
-	char	*newline;
-	int		i;
-
-	i = 0;
-	newline = ft_strchr(buffer, '\n');
-	if(newline)
-	{
-		while(newline[i] + 1)
-		{
-			buffer[i] = newline[i];
-			i++;
-		}
-		buffer[i] = '\0';
-	}
-	else
-	{
-		buffer[0] = '\0';
-	}
-
-
-
 }
 char	*get_next_line(int fd)
 {
-	int bytes_read;
-	static char buffer[BUFFER_SIZE + 1];
-	char	*copy_buffer;
-	char	*newline;
+	int i;
 
-	while(fd >= 0 || BUFFER_SIZE > 0)
-	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read < 0)
-			return (NULL);
-		check_buffer(buffer);
-	}
-	return (buffer);
+	
 }
 
 
