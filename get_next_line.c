@@ -6,7 +6,7 @@
 /*   By: guisanto <guisanto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:25:13 by guisanto          #+#    #+#             */
-/*   Updated: 2024/11/29 16:01:56 by guisanto         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:14:18 by guisanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,63 +53,65 @@ static char	*ft_strchr(const char *str, int c)
 		return ((char *)&str[i]);
 	return (NULL);
 }
+static check_buffer(char *buffer)
+{
+	char	*newline;
+	int		i;
 
+	i = 0;
+	newline = ft_strchr(buffer, '\n');
+	if(newline)
+	{
+		while(newline[i] + 1)
+		{
+			buffer[i] = newline[i];
+			i++;
+		}
+		buffer[i] = '\0';
+	}
+	else
+	{
+		buffer[0] = '\0';
+	}
+
+
+
+}
 char	*get_next_line(int fd)
 {
-	char		*temp;
-	char		*buf;
-	char		*line;
-	static char	*backup;
-	int			bytes_read;
-	char		*new_line;
-	int			len;
+	int bytes_read;
+	static char buffer[BUFFER_SIZE + 1];
+	char	*copy_buffer;
+	char	*newline;
 
-	buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!buf || fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	len = 0;
-	bytes_read = 1;
-	backup = NULL;
-	while (bytes_read > 0)
+	while(fd >= 0 || BUFFER_SIZE > 0)
 	{
-		bytes_read = read(fd, buf, BUFFER_SIZE);
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)
-			return (free(buf), NULL);
-		buf[bytes_read] = '\0';
-		if (backup)
-		{
-			temp = ft_strjoin(backup, buf);
-			free(backup);
-			backup = temp;
-		}
-		else
-			backup = ft_strdup("");
-		new_line = ft_strchr(backup, '\n');
-		if (new_line)
-		{
-			len = new_line - backup + 1;
-			line = ft_substr(backup, 0, len);
-			temp = ft_strdup(new_line + 1);
-			free(backup);
-			backup = temp;
-			break;
-		}
-		if (bytes_read == 0)
-		{
-			if (backup)
-			{
-				line = ft_strdup(backup);
-				free(backup);
-				backup = NULL;
-			}
-			break;
-		}
+			return (NULL);
+		check_buffer(buffer);
 	}
-	free(buf);
-	return (line);
+	return (buffer);
 }
 
-int main()
+
+/* int main(void)
+{
+	int    fd;
+	char  *next_line;
+	int  count;
+
+	count = 0;
+	fd = open("example.txt", O_RDONLY);
+	next_line = get_next_line(fd);
+	count++;
+	printf("[%d]:%s\n", count, next_line); //count is to show you the line numbers
+	next_line = NULL;
+
+	close(fd);
+	return (0);
+} */
+/* int main()
 {
 	int fd;
 	char *line;
@@ -127,4 +129,4 @@ int main()
 	}
 	close(fd);
 	return (0);
-}
+} */
