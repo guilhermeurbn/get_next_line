@@ -6,12 +6,28 @@
 /*   By: guisanto <guisanto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:28:30 by guisanto          #+#    #+#             */
-/*   Updated: 2024/12/02 14:25:35 by guisanto         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:31:16 by guisanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+char	*ft_strchr(const char *str, int c)
+{
+	int		i;
+	char	cc;
 
+	cc = (char)c;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == cc)
+			return ((char *)&str[i]);
+		i++;
+	}
+	if (str[i] == '\0' && cc == '\0')
+		return ((char *)&str[i]);
+	return (NULL);
+}
 void	*ft_calloc(size_t num_elements, size_t element_size)
 {
 	void	*ptr;
@@ -34,26 +50,6 @@ void	ft_bzero(void *s, size_t n)
 		((unsigned char *)s)[i] = 0;
 		i++;
 	}
-}
-char	*ft_strdup(const char *s)
-{
-	char	*str;
-	int		i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	str = (char *)malloc(i + 1);
-	if (!str)
-		return (NULL);
-	i = 0;
-	while (s[i])
-	{
-		str[i] = s[i];
-		i++;
-	}
-	str[i] = '\0';
-	return (str);
 }
 char	*ft_strjoin(const char *s1, const char *s2)
 {

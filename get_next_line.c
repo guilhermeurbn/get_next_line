@@ -6,81 +6,105 @@
 /*   By: guisanto <guisanto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:25:13 by guisanto          #+#    #+#             */
-/*   Updated: 2024/12/02 16:55:06 by guisanto         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:34:42 by guisanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_join_free(char *buffer, char *buf)
 {
-	size_t	i;
-	char	*dest;
+	char	*temp;
+	
+	temp = ft_strjoin(buffer, buf);
+	free(buffer);
+	return (temp);
+}
+char	*read_file(int fd, char *res)
+{
+	char	*buffer;
+	int		byte_read;
 
-	if (!s)
+	if (!res)
+		res = ft_calloc(1, 1);
+	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!buffer)
 		return (NULL);
-	if (start >= ft_strlen(s))
-		return (ft_strdup(""));
-	if (len > ft_strlen(s) - start)
-		len = ft_strlen(s) - start;
-	dest = ft_calloc(len + 1, sizeof(char));
-	if (!dest)
+	byte_read = 1;
+	while (byte_read > 0)
+	{
+		byte_read = read(fd, buffer, BUFFER_SIZE);
+		if  (byte_read == -1)
+			return (free(buffer), NULL);
+		buffer[byte_read] = '\0';
+		res = ft_join_free(res, buffer);
+		if (ft_strchr(buffer, '\n'))
+			break;
+	}
+	free(buffer);
+	return (res);
+}
+char	*ft_line(char *buffer)
+{
+	char	*line;
+	int		i;
+
+	i = 0;
+	if (!buffer[i])
+		return (NULL);
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	line = ft_calloc(i + 2, sizeof(char));
+	if (!line)
 		return (NULL);
 	i = 0;
-	while (i < len && s[start + i])
+	while (buffer[i] && buffer[i] != '\n')
 	{
-		dest[i] = s[start + i];
+		line[i] = buffer[i];
 		i++;
 	}
-	dest[i] = '\0';
-	return (dest);
+	if (buffer[i] == '\n')
+		line[i++] = '\n';
+	return (line);
 }
-
-static char	*ft_strchr(const char *str, int c)
+char	*ft_next(char *buffer)
 {
 	int		i;
-	char	cc;
+	int		j;
+	char 	*next;
 
-	cc = (char)c;
 	i = 0;
-	while (str[i])
-	{
-		if (str[i] == cc)
-			return ((char *)&str[i]);
+	if (!buffer)
+		return (NULL);
+	while(buffer[i] && buffer[i] != '\n')
 		i++;
-	}
-	if (str[i] == '\0' && cc == '\0')
-		return ((char *)&str[i]);
-	return (NULL);
-}
-static check_buffer(char *buffer)
-{
+	if (!buffer[i])
+		return (free(buffer), NULL);
+	next = ft_calloc(ft_strlen(buffer) - i + 1, sizeof(char));
+	if (!next)
+		return (NULL);
+	i++;
+	j = 0;
+	while(buffer[i])
+		next[j++] = buffer[i++];
+	free(buffer);
+	return (next);
 }
 char	*get_next_line(int fd)
 {
-	int i;
+	static char	*buffer;
+	char		*line;
 
-	
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+		return (NULL);
+	buffer = read_file(fd, buffer);
+	if (!buffer)
+		return (NULL);
+	line = ft_line(buffer);
+	buffer = ft_next(buffer);
+	return (line);	
 }
-
-
-/* int main(void)
-{
-	int    fd;
-	char  *next_line;
-	int  count;
-
-	count = 0;
-	fd = open("example.txt", O_RDONLY);
-	next_line = get_next_line(fd);
-	count++;
-	printf("[%d]:%s\n", count, next_line); //count is to show you the line numbers
-	next_line = NULL;
-
-	close(fd);
-	return (0);
-} */
-/* int main()
+int main()
 {
 	int fd;
 	char *line;
@@ -98,4 +122,4 @@ char	*get_next_line(int fd)
 	}
 	close(fd);
 	return (0);
-} */
+}
