@@ -6,11 +6,12 @@
 /*   By: guisanto <guisanto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:28:30 by guisanto          #+#    #+#             */
-/*   Updated: 2024/12/03 18:31:16 by guisanto         ###   ########.fr       */
+/*   Updated: 2024/12/04 15:37:53 by guisanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
 char	*ft_strchr(const char *str, int c)
 {
 	int		i;
@@ -28,6 +29,7 @@ char	*ft_strchr(const char *str, int c)
 		return ((char *)&str[i]);
 	return (NULL);
 }
+
 void	*ft_calloc(size_t num_elements, size_t element_size)
 {
 	void	*ptr;
@@ -40,6 +42,7 @@ void	*ft_calloc(size_t num_elements, size_t element_size)
 	ft_bzero(ptr, num_elements * element_size);
 	return (ptr);
 }
+
 void	ft_bzero(void *s, size_t n)
 {
 	size_t	i;
@@ -51,6 +54,7 @@ void	ft_bzero(void *s, size_t n)
 		i++;
 	}
 }
+
 char	*ft_strjoin(const char *s1, const char *s2)
 {
 	int		i;
@@ -76,6 +80,7 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	s3[i] = '\0';
 	return (s3);
 }
+
 size_t	ft_strlen(const char *s)
 {
 	size_t	i;
