@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: guisanto <guisanto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 13:20:49 by guisanto          #+#    #+#             */
-/*   Updated: 2024/12/05 17:06:50 by guisanto         ###   ########.fr       */
+/*   Updated: 2024/12/05 17:04:39 by guisanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 //This function joins two strings buffer and buf
 //creates a new string with the combined content
 //and frees the memory of the original buffer
@@ -101,21 +101,21 @@ char	*ft_next(char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer = NULL;
+	static char	*buffer[FD_SETSIZE];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
-	buffer = read_file(fd, buffer);
-	if (!buffer)
+	buffer[fd] = read_file(fd, buffer[fd]);
+	if (!buffer[fd])
 		return (NULL);
-	line = ft_line(buffer);
-	buffer = ft_next(buffer);
+	line = ft_line(buffer[fd]);
+	buffer[fd] = ft_next(buffer[fd]);
 	return (line);
 }
 /* int main()
 {
-	int fd1;
+	int fd1, fd2;
 	char *line;
 
 	// Abrir dois arquivos para testar
@@ -131,5 +131,19 @@ char	*get_next_line(int fd)
 		free(line);
 	}
 	close(fd1);
+
+	// Abrir dois arquivos para testar
+	fd2 = open("text2.txt", O_RDONLY);
+
+	if (fd2 == -1)
+	{
+		perror("Error opening file");
+		return 1;
+	}
+	while ((line = get_next_line(fd2)) != NULL) {
+		printf("%s", line);
+		free(line);
+	}
+	close(fd2);
 	return 0;
 } */
