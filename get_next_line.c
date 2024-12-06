@@ -6,7 +6,7 @@
 /*   By: guisanto <guisanto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 13:20:49 by guisanto          #+#    #+#             */
-/*   Updated: 2024/12/05 17:06:50 by guisanto         ###   ########.fr       */
+/*   Updated: 2024/12/06 13:18:49 by guisanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,11 @@ char	*read_file(int fd, char *buffer)
 	{
 		byte_read = read(fd, temp_buffer, BUFFER_SIZE);
 		if (byte_read == -1)
+		{
+			free(buffer);
+			buffer = NULL;
 			return (free(temp_buffer), NULL);
+		}
 		temp_buffer[byte_read] = '\0';
 		buffer = ft_join_free(buffer, temp_buffer);
 		if (ft_strchr(temp_buffer, '\n'))
@@ -105,7 +109,12 @@ char	*get_next_line(int fd)
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	{
+		if (buffer)
+			free(buffer);
+		buffer = NULL;
 		return (NULL);
+	}
 	buffer = read_file(fd, buffer);
 	if (!buffer)
 		return (NULL);
@@ -119,7 +128,7 @@ char	*get_next_line(int fd)
 	char *line;
 
 	// Abrir dois arquivos para testar
-	fd1 = open("text1.txt", O_RDONLY);
+	fd1 = open("text1 .txt", O_RDONLY);
 
 	if (fd1 == -1)
 	{
