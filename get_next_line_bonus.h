@@ -6,7 +6,7 @@
 /*   By: guisanto <guisanto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 13:23:18 by guisanto          #+#    #+#             */
-/*   Updated: 2024/12/05 17:03:19 by guisanto         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:27:48 by guisanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <sys/select.h>
 
 char	*get_next_line(int fd);
 char	*ft_join_free(char *s1, char *s2);
