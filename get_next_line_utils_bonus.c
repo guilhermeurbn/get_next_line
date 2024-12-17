@@ -6,7 +6,7 @@
 /*   By: guisanto <guisanto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 15:18:42 by guisanto          #+#    #+#             */
-/*   Updated: 2024/12/11 16:28:16 by guisanto         ###   ########.fr       */
+/*   Updated: 2024/12/17 15:32:30 by guisanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*ft_strjoin(char *next_line, char *buffer)
 	free(next_line);
 	i = -1;
 	while (++i < s2)
-		dest[i] = buffer[i];
+		dest[s1 + i] = buffer[i];
 	i = -1;
 	while (buffer[s2 + ++i])
 		buffer[i] = buffer[s2 + i];
