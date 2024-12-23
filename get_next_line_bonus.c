@@ -6,7 +6,7 @@
 /*   By: guisanto <guisanto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 14:55:59 by guisanto          #+#    #+#             */
-/*   Updated: 2024/12/11 16:33:04 by guisanto         ###   ########.fr       */
+/*   Updated: 2024/12/12 13:16:19 by guisanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*get_next_line(int fd)
 
 	next_line = NULL;
 	bytes_read = 1;
-	while (fd >= 0 && fd < FOPEN_MAX && BUFFER_SIZE > 0 && bytes_read > 0)
+	while ((fd >= 0 && fd < FOPEN_MAX && BUFFER_SIZE > 0) && bytes_read > 0)
 	{
 		if (buffer[fd][0])
 		{
@@ -42,14 +42,22 @@ char	*get_next_line(int fd)
 }
 /* int main()
 {
-	int fd, fd2, fd3;
+	int fd, fd1;
+	char	*next_line;
 	fd = open("text.txt", O_RDONLY);
-	fd2 = open("text2.txt", O_RDONLY);
-	fd3 = open("text3.txt", O_RDONLY);
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd2));
-	printf("%s", get_next_line(fd3));
-	printf("%s", get_next_line(fd2));
-	printf("%s", get_next_line(fd));
+	fd1 = open("text2.txt", O_RDONLY);
+
+	while ((next_line = get_next_line(fd)) != NULL)
+	{
+		printf("%s", next_line);
+		free(next_line);
+	}
+	close (fd);
+	while((next_line = get_next_line(fd1)) != NULL)
+	{
+		printf("%s", next_line);
+		free(next_line);
+	}
+	close(fd1);
+	return (0);
 } */

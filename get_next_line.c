@@ -6,7 +6,7 @@
 /*   By: guisanto <guisanto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:34:58 by guisanto          #+#    #+#             */
-/*   Updated: 2024/12/11 16:32:52 by guisanto         ###   ########.fr       */
+/*   Updated: 2024/12/12 13:16:55 by guisanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*get_next_line(int fd)
 
 	next_line = NULL;
 	bytes_read = 1;
-	while (fd >= 0 && BUFFER_SIZE > 0 && bytes_read > 0)
+	while ((fd >= 0 && BUFFER_SIZE > 0) && bytes_read > 0)
 	{
 		if (buffer[0])
 		{
@@ -48,12 +48,11 @@ char	*get_next_line(int fd)
 	fd = open("text.txt", O_RDONLY);
 	if (fd == -1)
 		perror ("error");
-	next_line = get_next_line(fd);
-	while(next_line)
+	while((next_line = get_next_line(fd)) != NULL )
 	{
 		printf("%s", next_line);
-		next_line = get_next_line(fd);
 		free(next_line);
 	}
 	close(fd);
+	return (0);
 } */
